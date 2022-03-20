@@ -6,58 +6,43 @@ function computerPlay() {
 
 // generates a 'who wins' message from player & computer selections
 function playRound(playerSelection, computerSelection) {
+  
   if (!playerSelection) {
     console.log('Make a choice!');
     return null;
   }
   // parse player selection to correct case
   const playerChoice = playerSelection[0].toUpperCase() + playerSelection.slice(1).toLowerCase();
-  // determine who wins
+
+  // vars for tracking winner
   let playerWins = null;
   let winner;
   let loser;
 
+  // func for 
   function handleChoices(player, computer, playerWins) {
     winOrLose = playerWins ? 'Win!' : 'Lost!';
     winner = playerWins ? player : computer;
     loser = playerWins ? computer : player;
   }
 
-  if (playerChoice == 'Rock') {
-    if (computerSelection == 'Rock') {
-      console.log('Draw! Try again');
-      return null;
-    } else if (computerSelection == 'Scissors') {
-      playerWins = true;
-    } else if (computerSelection == 'Paper') {
-      playerWins = false;
-    } else {
-      return 'Error: Invalid computer choice';
-    }
-  } else if (playerChoice == 'Scissors') {
-    if (computerSelection == 'Rock') {
-      playerWins = false;
-    } else if (computerSelection == 'Scissors') {
-      console.log('Draw! Try again');
-      return null;
-    } else if (computerSelection == 'Paper') {
-      playerWins = true;
-    } else {
-      return 'Error: Invalid computer choice';
-    }
-  } else if (playerChoice == 'Paper') {
-    if (computerSelection == 'Rock') {
-      playerWins = true;
-    } else if (computerSelection == 'Scissors') {
-      playerWins = false;
-    } else if (computerSelection == 'Paper') {
-      console.log('Draw! Try again');
-      return null;
-    } else {
-      return 'Error: Invalid computer choice';
-    }
+  //determine who wins
+  if ((playerChoice == 'Rock' && computerSelection == 'Scissors') ||
+      (playerChoice == 'Scissors' && computerSelection == 'Paper') ||
+      (playerChoice == 'Paper' && computerSelection == 'Rock')) {
+        playerWins = true;
+      }
+  else if ((playerChoice == 'Rock' && computerSelection == 'Paper') ||
+           (playerChoice == 'Scissors' && computerSelection == 'Rock') ||
+           (playerChoice == 'Paper' && computerSelection == 'Scissors')) {
+             playerWins = false;
+           }
+  else if (playerChoice == computerSelection) {
+    console.log('Draw! Try again');
+    return null;
   } else {
-    return 'Choose "Rock", "Paper" or "Scissors"!';
+    console.log('Choose "Rock", "Paper" or "Scissors"!')
+    return null;
   }
 
   handleChoices(playerChoice, computerSelection, playerWins);
@@ -84,6 +69,16 @@ function game() {
     } else {
       //don't use a turn if it was a tie
       i--;
+    }
+
+    if (computerScore > 2) {
+      console.log('Computer Wins!');
+      i = 5;
+    }
+
+    if (playerScore > 2) {
+      console.log('You Win!')
+      i = 5;
     }
 
     console.log(`Your score: ${playerScore} -- Computer's score: ${computerScore}`)

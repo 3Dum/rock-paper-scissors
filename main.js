@@ -1,13 +1,18 @@
 const buttons = document.querySelectorAll('button');
 buttons.forEach(button => {
-  button.addEventListener('click', selectChoice);
+  button.addEventListener('click', playWithChoice);
 })
 
-function selectChoice(e) {
-  console.log(this.id)
+let playerScore = 0;
+const playerScoreDisplay = document.getElementById('playerscore');
+let computerScore = 0;
+const computerScoreDisplay = document.getElementById('compscore');
+
+const results = document.getElementById('results');
+
+function playWithChoice(e) {
   playRound(this.id, computerPlay())
 }
-
 
 // generates random computer choice
 function computerPlay() {
@@ -16,14 +21,8 @@ function computerPlay() {
 }
 
 // generates a 'who wins' message from player & computer selections
-function playRound(playerSelection, computerSelection) {
-  
-  if (!playerSelection) {
-    console.log('Make a choice!');
-    return null;
-  }
-  // parse player selection to correct case
-  const playerChoice = playerSelection[0].toUpperCase() + playerSelection.slice(1).toLowerCase();
+function playRound(playerChoice, computerSelection) {
+  playerChoice = playerChoice[0].toUpperCase() + [...playerChoice].slice(1).join('');
 
   // vars for tracking winner
   let playerWins = null;
@@ -37,38 +36,50 @@ function playRound(playerSelection, computerSelection) {
     loser = playerWins ? computer : player;
   }
 
+  console.log('P: ' + playerChoice + '  c:' + computerSelection);
+
   //determine who wins
   if ((playerChoice == 'Rock' && computerSelection == 'Scissors') ||
       (playerChoice == 'Scissors' && computerSelection == 'Paper') ||
       (playerChoice == 'Paper' && computerSelection == 'Rock')) {
         playerWins = true;
+        playerScore++;
+        playerScoreDisplay.textContent = playerScore;
       }
   else if ((playerChoice == 'Rock' && computerSelection == 'Paper') ||
            (playerChoice == 'Scissors' && computerSelection == 'Rock') ||
            (playerChoice == 'Paper' && computerSelection == 'Scissors')) {
              playerWins = false;
+             computerScore++;
+             computerScoreDisplay.textContent = computerScore;
            }
   else if (playerChoice == computerSelection) {
-    console.log('Draw! Try again');
+    results.textContent = 'Draw! Try again';
     return null;
-  } else {
-    console.log('Choose "Rock", "Paper" or "Scissors"!')
+  } else { //**** can probably delete */
+    results.textContent = 'ERROR'
     return null;
   }
 
-  handleChoices(playerChoice, computerSelection, playerWins);
+  if (playerScore > 4 || computerScore > 4) {
+    let winMessage = document.createElement('h2');
+    winMessage.textContent = `Game Over! ${playerScore > computerScore ? 'You Win!' : 'Computer Won'}`;
+    results.insertAdjacentElement('afterend', winMessage)
+    buttons.forEach(button => button.removeEventListener('click', playWithChoice));
+  }
 
-  console.log(`You ${playerWins ? 'Won!' : 'Lost!'}! ${winner} beats ${loser}`);
+  handleChoices(playerChoice, computerSelection, playerWins);
+  results.textContent = `You ${playerWins ? 'Won!' : 'Lost!'}! ${winner} beats ${loser}`;
   return playerWins;
 }
 
-function game() {
+
+
+function resetGame() {
   let playerScore = 0;
   let computerScore = 0;
-  let userChoice;
+  results.textContent = 'Choose Rock, Paper, Scissors!'
 
-  //removed logic here ***
-  let userWon = playRound(userChoice, computerPlay());
   //update scores
   if (userWon !== null) {
     if (userWon) {
@@ -82,16 +93,14 @@ function game() {
   }
 
   if (computerScore > 2) {
-    console.log('Computer Wins!');
+    results.textContent = 'Computer Wins!';
     i = 5;
   }
 
   if (playerScore > 2) {
-    console.log('You Win!')
+    results.textContent = 'You Win!';
     i = 5;
   }
 
-    console.log(`Your score: ${playerScore} -- Computer's score: ${computerScore}`)
+    results.textContent += ` - Your score: ${playerScore} -- Computer's score: ${computerScore}`;
 }
-
-game();

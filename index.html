@@ -5,15 +5,19 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="./styles.css">
-  <title>Document</title>
+  <title>Rock, Paper, Scissors</title>
 </head>
 <body>
-  <div class="container">
+  <div class="container flex-item">
     <button id="rock">Rock</button>
     <button id="paper">Paper</button>
     <button id="scissors">Scissors</button>
   </div>
-  <div id="results">Choose Rock, Paper or Scissors!</div>
+  <p id="results" class="flex-item">Choose Rock, Paper or Scissors!</p>
+  <div id="scores" class="flex-item">
+    <h2>Player: <span id="playerscore">0</span></h2>
+    <h2>Computer: <span id="compscore">0</span></h2>
+  </div>
   <script src="./main.js"></script>
 </body>
 </html>

@@ -6,12 +6,20 @@ body {
   height: 100vh;
 }
 
-div {
+div, p {
   flex-grow: 1;
 }
 
 .container {
   display: flex;
   align-items: center;
+  gap: 30px;
+}
 
+h2 {
+  text-align: center;
+}
+
+.flex-item {
+  flex-basis: auto;
 }

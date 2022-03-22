@@ -1,12 +1,13 @@
-const buttons = document.querySelectorAll('button');
-buttons.forEach(button => {
-  button.addEventListener('click', playWithChoice);
-})
-
 let playerScore = 0;
 const playerScoreDisplay = document.getElementById('playerscore');
 let computerScore = 0;
 const computerScoreDisplay = document.getElementById('compscore');
+
+function updateScores() {
+  console.log('c=' + computerScore + 'p=' + playerScore);
+  playerScoreDisplay.textContent = playerScore;
+  computerScoreDisplay.textContent = computerScore;
+}
 
 const results = document.getElementById('results');
 
@@ -17,7 +18,9 @@ function playWithChoice(e) {
 // generates random computer choice
 function computerPlay() {
   const choices = ['Rock', 'Paper', 'Scissors'];
-  return choices[Math.floor(Math.random() * 3)];
+  const choice = choices[Math.floor(Math.random() * 3)];
+  document.getElementById('compchoice').textContent =  choice;
+  return choice;
 }
 
 // generates a 'who wins' message from player & computer selections
@@ -36,36 +39,36 @@ function playRound(playerChoice, computerSelection) {
     loser = playerWins ? computer : player;
   }
 
-  console.log('P: ' + playerChoice + '  c:' + computerSelection);
-
   //determine who wins
   if ((playerChoice == 'Rock' && computerSelection == 'Scissors') ||
       (playerChoice == 'Scissors' && computerSelection == 'Paper') ||
       (playerChoice == 'Paper' && computerSelection == 'Rock')) {
         playerWins = true;
         playerScore++;
-        playerScoreDisplay.textContent = playerScore;
+        updateScores();
       }
   else if ((playerChoice == 'Rock' && computerSelection == 'Paper') ||
-           (playerChoice == 'Scissors' && computerSelection == 'Rock') ||
-           (playerChoice == 'Paper' && computerSelection == 'Scissors')) {
-             playerWins = false;
-             computerScore++;
-             computerScoreDisplay.textContent = computerScore;
-           }
-  else if (playerChoice == computerSelection) {
-    results.textContent = 'Draw! Try again';
-    return null;
-  } else { //**** can probably delete */
-    results.textContent = 'ERROR'
-    return null;
+      (playerChoice == 'Scissors' && computerSelection == 'Rock') ||
+      (playerChoice == 'Paper' && computerSelection == 'Scissors')) {
+        playerWins = false;
+        computerScore++;
+        updateScores();
+      } else {
+      results.textContent = 'Draw! Try again';
+      return;
   }
 
   if (playerScore > 4 || computerScore > 4) {
     let winMessage = document.createElement('h2');
     winMessage.textContent = `Game Over! ${playerScore > computerScore ? 'You Win!' : 'Computer Won'}`;
+    winMessage.id = 'winmessage';
     results.insertAdjacentElement('afterend', winMessage)
     buttons.forEach(button => button.removeEventListener('click', playWithChoice));
+    let resetButton = document.createElement('button');
+    resetButton.textContent = 'reset';
+    resetButton.id = 'reset'
+    resetButton.addEventListener('click', resetGame);
+    winMessage.insertAdjacentElement('afterend', resetButton)
   }
 
   handleChoices(playerChoice, computerSelection, playerWins);
@@ -73,34 +76,22 @@ function playRound(playerChoice, computerSelection) {
   return playerWins;
 }
 
-
-
 function resetGame() {
-  let playerScore = 0;
-  let computerScore = 0;
+  playerScore = 0;
+  computerScore = 0;
+  updateScores();
   results.textContent = 'Choose Rock, Paper, Scissors!'
-
-  //update scores
-  if (userWon !== null) {
-    if (userWon) {
-      playerScore++;
-    } else {
-      computerScore++;
-    }
-  } else {
-    //don't use a turn if it was a tie
-    //i--;
-  }
-
-  if (computerScore > 2) {
-    results.textContent = 'Computer Wins!';
-    i = 5;
-  }
-
-  if (playerScore > 2) {
-    results.textContent = 'You Win!';
-    i = 5;
-  }
-
-    results.textContent += ` - Your score: ${playerScore} -- Computer's score: ${computerScore}`;
+  document.getElementById('reset').remove();
+  document.getElementById('winmessage').remove();
+  const buttons = document.querySelectorAll('button');
+  buttons.forEach(button => {
+  button.addEventListener('click', playWithChoice);
+  document.getElementById('compchoice').textContent =  '';
+})
 }
+
+const buttons = document.querySelectorAll('button');
+
+buttons.forEach(button => {
+button.addEventListener('click', playWithChoice);
+});

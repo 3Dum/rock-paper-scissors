@@ -4,6 +4,8 @@ body {
   justify-content: center;
   align-items: center;
   height: 100vh;
+  background-color: #B5DEAD;
+  font-family: Bungee, 'Courier New', Courier, monospace;
 }
 
 div, p {
@@ -22,4 +24,13 @@ h2 {
 
 .flex-item {
   flex-basis: auto;
+}
+
+button {
+  all: unset;
+  background-color: #442220;
+  color: #B0CA87;
+  border-radius: 30px;
+  padding: 20px;
+  cursor: pointer;
 }

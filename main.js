@@ -4,14 +4,13 @@ let computerScore = 0;
 const computerScoreDisplay = document.getElementById('compscore');
 
 function updateScores() {
-  console.log('c=' + computerScore + 'p=' + playerScore);
   playerScoreDisplay.textContent = playerScore;
   computerScoreDisplay.textContent = computerScore;
 }
 
 const results = document.getElementById('results');
 
-function playWithChoice(e) {
+function playWithChoice() {
   playRound(this.id, computerPlay())
 }
 
@@ -23,23 +22,19 @@ function computerPlay() {
   return choice;
 }
 
-// generates a 'who wins' message from player & computer selections
 function playRound(playerChoice, computerSelection) {
   playerChoice = playerChoice[0].toUpperCase() + [...playerChoice].slice(1).join('');
 
-  // vars for tracking winner
-  let playerWins = null;
+  let playerWins;
   let winner;
   let loser;
 
-  // func for 
   function handleChoices(player, computer, playerWins) {
     winOrLose = playerWins ? 'Win!' : 'Lost!';
     winner = playerWins ? player : computer;
     loser = playerWins ? computer : player;
   }
 
-  //determine who wins
   if ((playerChoice == 'Rock' && computerSelection == 'Scissors') ||
       (playerChoice == 'Scissors' && computerSelection == 'Paper') ||
       (playerChoice == 'Paper' && computerSelection == 'Rock')) {
@@ -63,7 +58,9 @@ function playRound(playerChoice, computerSelection) {
     winMessage.textContent = `Game Over! ${playerScore > computerScore ? 'You Win!' : 'Computer Won'}`;
     winMessage.id = 'winmessage';
     results.insertAdjacentElement('afterend', winMessage)
+
     buttons.forEach(button => button.removeEventListener('click', playWithChoice));
+
     let resetButton = document.createElement('button');
     resetButton.textContent = 'reset';
     resetButton.id = 'reset'

@@ -1,3 +1,14 @@
+const buttons = document.querySelectorAll('button');
+buttons.forEach(button => {
+  button.addEventListener('click', selectChoice);
+})
+
+function selectChoice(e) {
+  console.log(this.id)
+  playRound(this.id, computerPlay())
+}
+
+
 // generates random computer choice
 function computerPlay() {
   const choices = ['Rock', 'Paper', 'Scissors'];
@@ -56,33 +67,31 @@ function game() {
   let computerScore = 0;
   let userChoice;
 
-  for (let i = 0; i < 5; i++) {
-    userChoice = prompt('Paper, Scissors, Rock?');
-    let userWon = playRound(userChoice, computerPlay());
-    //update scores
-    if (userWon !== null) {
-      if (userWon) {
-        playerScore++;
-      } else {
-        computerScore++;
-      }
+  //removed logic here ***
+  let userWon = playRound(userChoice, computerPlay());
+  //update scores
+  if (userWon !== null) {
+    if (userWon) {
+      playerScore++;
     } else {
-      //don't use a turn if it was a tie
-      i--;
+      computerScore++;
     }
+  } else {
+    //don't use a turn if it was a tie
+    //i--;
+  }
 
-    if (computerScore > 2) {
-      console.log('Computer Wins!');
-      i = 5;
-    }
+  if (computerScore > 2) {
+    console.log('Computer Wins!');
+    i = 5;
+  }
 
-    if (playerScore > 2) {
-      console.log('You Win!')
-      i = 5;
-    }
+  if (playerScore > 2) {
+    console.log('You Win!')
+    i = 5;
+  }
 
     console.log(`Your score: ${playerScore} -- Computer's score: ${computerScore}`)
-  }
 }
 
 game();
